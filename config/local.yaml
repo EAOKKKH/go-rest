@@ -1,0 +1,11 @@
+loglevel: "debug"
+server:
+  port: ":8000"
+postgres:
+  postgreshost: "localhost"
+  postgresport: 5432
+  postgresuser: "postgres"
+  postgrespassword: "postgres"
+  postgresdbname: "test_db"
+  postgressslmode: "disable"
+  pgdriver: "pgx"
