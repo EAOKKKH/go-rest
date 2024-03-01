@@ -59,7 +59,7 @@ func (h *urlHandler) Redirect(ctx echo.Context) error {
 	return ctx.Redirect(http.StatusFound, url)
 }
 
-func MapRoutes(group *echo.Group, h IUrlHandler) {
-	group.POST("/url", h.CreateUrl)
+func MapUrlRoutes(group *echo.Group, h IUrlHandler) {
+	group.POST("", h.CreateUrl)
 	group.GET("/:alias", h.Redirect)
 }

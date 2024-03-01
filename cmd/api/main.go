@@ -8,6 +8,13 @@ import (
 	"os"
 )
 
+// @title Url shortener API
+// @version 1.0
+// @description simple Url shortener application with auth
+
+// @host localhost:8000
+// @BasePath /api
+
 func main() {
 	os.Setenv("CONFIG_PATH", "config/local.yaml")
 

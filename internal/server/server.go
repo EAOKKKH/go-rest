@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"go-rest/docs"
 	"go-rest/internal/config"
 	"go-rest/internal/handler"
 	"go-rest/internal/models/validators"
@@ -16,6 +17,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo/v4"
 	"github.com/sirupsen/logrus"
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
 type Server struct {
@@ -49,7 +51,6 @@ func (s *Server) Run() error {
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
 
 	<-quit
-
 	ctx, shutdown := context.WithTimeout(context.Background(), 5*time.Second)
 	defer shutdown()
 	return s.echo.Server.Shutdown(ctx)
@@ -57,11 +58,26 @@ func (s *Server) Run() error {
 
 func (s *Server) MapHandlers(e *echo.Echo) error {
 	urlRepo := repository.NewUrlRepository(s.db)
+	authRepo := repository.NewUserRepository(s.db)
+
 	urlVal := validators.NewUrlValidator()
+
+	authUc := usecase.NewAuthUsecase(s.logger, s.cfg, authRepo)
 	urlUc := usecase.NewUrlUsecase(s.logger, s.cfg, urlRepo)
+
 	urlHs := handler.NewUrlHandler(s.cfg, s.logger, urlUc, urlVal)
+	authHs := handler.NewAuthHandler(s.logger, authUc)
+
+	docs.SwaggerInfo.Title = "Url shortener rest api"
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
+
 	v1 := e.Group("/api")
-	urlGroup := v1.Group("")
-	handler.MapRoutes(urlGroup, urlHs)
+
+	urlGroup := v1.Group("/url")
+	authGroup := v1.Group("/auth")
+
+	handler.MapUrlRoutes(urlGroup, urlHs)
+	handler.MapAuthRoutes(authGroup, authHs)
+
 	return nil
 }
