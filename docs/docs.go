@@ -17,7 +17,7 @@ const docTemplate = `{
     "paths": {
         "/auth/signin": {
             "post": {
-                "description": "returns user and set session-cookie",
+                "description": "returns user with jwt token",
                 "consumes": [
                     "application/json"
                 ],
@@ -43,7 +43,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/models.Token"
                         }
                     }
                 }
@@ -85,6 +85,14 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.Token": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
         "models.User": {
             "type": "object",
             "properties": {
@@ -95,6 +103,13 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`

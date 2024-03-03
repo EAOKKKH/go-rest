@@ -1,6 +1,8 @@
 loglevel: "debug"
 server:
   port: ":8000"
+  jwtkey: "jwtjwtjwt"
+  jwtexpire: 3600
 postgres:
   postgreshost: "localhost"
   postgresport: 5432

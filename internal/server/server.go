@@ -2,7 +2,7 @@ package server
 
 import (
 	"context"
-	"go-rest/docs"
+	_ "go-rest/docs"
 	"go-rest/internal/config"
 	"go-rest/internal/handler"
 	"go-rest/internal/models/validators"
@@ -68,7 +68,6 @@ func (s *Server) MapHandlers(e *echo.Echo) error {
 	urlHs := handler.NewUrlHandler(s.cfg, s.logger, urlUc, urlVal)
 	authHs := handler.NewAuthHandler(s.logger, authUc)
 
-	docs.SwaggerInfo.Title = "Url shortener rest api"
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
 	v1 := e.Group("/api")

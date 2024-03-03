@@ -28,15 +28,23 @@ func NewAuthHandler(logger *logrus.Logger, authUsecase usecase.IAuthUsecase) IAu
 }
 
 // @Summary login
-// @Description returns user and set session-cookie
+// @Description returns user with jwt token
 // @Tags auth
 // @Accept json
 // @Param input body models.User true "user params"
 // @Produce json
-// @Success 200 {object} models.User
+// @Success 200 {object} models.Token
 // @Router /auth/signin [post]
 func (h *authHandler) Login(ctx echo.Context) error {
-	panic("unimplemented")
+	user := &models.User{}
+	if err := ctx.Bind(user); err != nil {
+		return ctx.JSON(http.StatusBadRequest, err)
+	}
+	token, err := h.authUsecase.Login(ctx.Request().Context(), user)
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, err)
+	}
+	return ctx.JSON(http.StatusAccepted, token)
 }
 
 // Logout implements IAuthHandler.

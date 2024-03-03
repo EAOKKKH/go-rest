@@ -9,10 +9,21 @@ import (
 
 type IAuthRepository interface {
 	SaveUser(ctx context.Context, user *models.User) (*models.User, error)
+	FindUserByLogin(ctx context.Context, login string) (*models.User, error)
 }
 
 type authRepository struct {
 	db *sqlx.DB
+}
+
+// FindUserByLogin implements IAuthRepository.
+func (r *authRepository) FindUserByLogin(ctx context.Context, login string) (*models.User, error) {
+	u := &models.User{}
+	if err := r.db.QueryRowxContext(ctx, `SELECT login, password FROM users WHERE login = $1`,
+		login).StructScan(u); err != nil {
+		return nil, err
+	}
+	return u, nil
 }
 
 // SaveUser implements IAuthRepository.

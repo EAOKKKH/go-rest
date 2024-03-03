@@ -11,9 +11,11 @@ import (
 // @title Url shortener API
 // @version 1.0
 // @description simple Url shortener application with auth
-
 // @host localhost:8000
 // @BasePath /api
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 
 func main() {
 	os.Setenv("CONFIG_PATH", "config/local.yaml")

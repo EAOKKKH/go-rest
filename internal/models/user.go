@@ -4,7 +4,7 @@ import "golang.org/x/crypto/bcrypt"
 
 type User struct {
 	Login    string `json:"login"`
-	Password string `json:"password"`
+	Password string `json:"password,omitempty"`
 }
 
 func (u *User) HashPassword() error {
@@ -21,4 +21,8 @@ func (u *User) ComparePasswords(password string) error {
 		return err
 	}
 	return nil
+}
+
+func (u *User) SanitizePassword() {
+	u.Password = ""
 }

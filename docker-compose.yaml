@@ -16,14 +16,14 @@ services:
     networks:
       - rest_api
     
-  redis:
-    image: redis:7-alpine
-    container_name: redis
-    ports:
-      - "6379:6379"
-    restart: always
-    networks:
-      - rest_api
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: redis
+  #   ports:
+  #     - "6379:6379"
+  #   restart: always
+  #   networks:
+  #     - rest_api
 
 networks:
   rest_api:

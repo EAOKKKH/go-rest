@@ -15,7 +15,9 @@ type Config struct {
 }
 
 type ServerConfig struct {
-	Port string
+	Port      string
+	JwtKey    string
+	JwtExpire int
 }
 type PostgresConfig struct {
 	PostgresHost     string

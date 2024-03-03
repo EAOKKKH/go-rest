@@ -1,5 +1,10 @@
 basePath: /api
 definitions:
+  models.Token:
+    properties:
+      token:
+        type: string
+    type: object
   models.User:
     properties:
       login:
@@ -18,7 +23,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: returns user and set session-cookie
+      description: returns user with jwt token
       parameters:
       - description: user params
         in: body
@@ -32,7 +37,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.User'
+            $ref: '#/definitions/models.Token'
       summary: login
       tags:
       - auth
@@ -58,4 +63,9 @@ paths:
       summary: register new user
       tags:
       - auth
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"
